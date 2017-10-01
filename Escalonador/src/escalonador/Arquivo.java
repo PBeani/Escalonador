@@ -1,4 +1,4 @@
-package epso;
+package escalonador;
 
 public class Arquivo {
     public String nome;
