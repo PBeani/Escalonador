@@ -19,7 +19,7 @@ public class Escalonador {
         // carrega o valor do quantum que será usado no escalonamento
         quantum = GerenciadorArquivos.carregarQuantum(diretorio);
     }
-    //teste git 2
+    
     private void carregarTabelaProcessos() {
         for(int i = 0; i < 10; i++) {
             int prioridade = prioridades[i];
