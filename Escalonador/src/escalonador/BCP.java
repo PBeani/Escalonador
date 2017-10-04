@@ -8,8 +8,9 @@ public class BCP {
     private int contadorDePrograma;
     private int registradorX;
     private int registradorY;
-
-    enum estadoDoProcesso {
+    private estadoDoProcesso estado;
+    
+    public enum estadoDoProcesso {
         EXECUTANDO, PRONTO, BLOQUEADO;
     }
 
@@ -20,6 +21,7 @@ public class BCP {
         contadorDePrograma = 0;
         registradorX = 0;
         registradorY = 0;
+        estado = estadoDoProcesso.PRONTO;
     }
 
     public int getContadorDePrograma() {
@@ -46,6 +48,10 @@ public class BCP {
         return segmentoDeTexto;
     }
     
+    public estadoDoProcesso getEstado() {
+        return estado;
+    }
+    
     public void setContadorDePrograma(int contadorDePrograma) {
         this.contadorDePrograma = contadorDePrograma;
     }
@@ -56,5 +62,9 @@ public class BCP {
     
     public void setY(int y) {
         registradorY = y;
+    }
+    
+    public void setEstado(estadoDoProcesso e) {
+        estado = e;
     }
 }

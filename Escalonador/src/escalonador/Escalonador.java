@@ -1,5 +1,6 @@
 package escalonador;
 
+import escalonador.BCP.estadoDoProcesso;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,7 @@ public class Escalonador {
     Arquivo[] listaArquivos;
     int[] prioridades;
     int quantum;
+    int tempoEspera;
     TabelaDeProcessos tabelaProcessos;
 
     public Escalonador(String diretorio) {
@@ -19,6 +21,7 @@ public class Escalonador {
         // carrega o valor do quantum que será usado no escalonamento
         quantum = GerenciadorArquivos.carregarQuantum(diretorio);
         tabelaProcessos = new TabelaDeProcessos();
+        tempoEspera = 4;
     }
 
     private void carregarTabelaProcessos() {
@@ -29,8 +32,16 @@ public class Escalonador {
             tabelaProcessos.inserirProcesso(processo);
         }
     }
-
+     
+    // salva o estado atual no bcp
+    private void salvarExecucao(BCP bcp, int pc, int x, int y) {
+        bcp.setContadorDePrograma(pc);
+        bcp.setX(x);
+        bcp.setY(y);
+    }
+    
     private void executarProcesso(Processo p) {
+        p.credito = p.credito - 1;
         // carrega o bcp do processo, para trazer suas informações para a memória
         BCP bcp = p.bcp;
         // carrega o segmento de texto, que contém as instruções do programa
@@ -40,22 +51,24 @@ public class Escalonador {
         // carrega o valor dos registradores
         int x = bcp.getX();
         int y = bcp.getY();
-        // o número de comandos até o limite dado pelo quantum, mas pode ser interrompido
-        for (int i = 0; i < this.quantum; i++) {
+        // roda o número de comandos até o limite dado pelo quantum, mas pode ser interrompido
+        int i = 0;
+        while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO) {
             // carrega o comando que será executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
-            // ver se é melhor fazer isso antes ou depois de executar, acho que antes é melhor por causa de e/s
             pc++;
             // verfica qual é a instrução atual e realiza a operação correspondente
             switch (comando) {
                 case "E/S":
-                    this.realizarES(p);
+                    salvarExecucao(bcp, pc, x, y);
+                    bloquearProcesso(p);
                     break;
                 case "COM":
                     break;
                 case "SAIDA":
-                    this.finalizarProcesso(p);
+                    salvarExecucao(bcp, pc, x, y);
+                    finalizarProcesso(p);
                     break;
                 // como o número de operações é limitado, se não for nenhuma das listadas acima, será a de atribuição
                 default:
@@ -73,10 +86,10 @@ public class Escalonador {
                     }
                     break;
             }
-        // ver o que precisa ser feito ao final de cada instrução
+            // ver o que precisa ser feito ao final de cada instrução
+            i++;
         }
-        //salva o bcp
-        //finalizar execução
+        salvarExecucao(bcp, pc, x, y);
     }
 
     public static void main(String[] args) {
