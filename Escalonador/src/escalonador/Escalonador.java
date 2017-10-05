@@ -5,6 +5,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import epso.ListaDeBloqueados;
+import epso.ListaDeProntos;
+import epso.Processo;
+
 public class Escalonador {
 
     Arquivo[] listaArquivos;
@@ -12,6 +16,8 @@ public class Escalonador {
     int quantum;
     int tempoEspera;
     TabelaDeProcessos tabelaProcessos;
+    ListaDeProntos listaProntos;
+    ListaDeBloqueados listaBloqueados;
 
     public Escalonador(String diretorio) {
         // constrói a lista que contém os arquivos que irão gerar os processos
@@ -21,7 +27,9 @@ public class Escalonador {
         // carrega o valor do quantum que será usado no escalonamento
         quantum = GerenciadorArquivos.carregarQuantum(diretorio);
         tabelaProcessos = new TabelaDeProcessos();
-        tempoEspera = 4;
+        listaProntos = new ListaDeProntos();
+        listaBloqueados= new ListaDeBloqueados();
+        tempoEspera = 0;
     }
 
     private void carregarTabelaProcessos() {
@@ -38,6 +46,18 @@ public class Escalonador {
         bcp.setContadorDePrograma(pc);
         bcp.setX(x);
         bcp.setY(y);
+    }
+    private void bloquearProcesso(Processo p){
+    	p.bcp.setEstado(estadoDoProcesso.BLOQUEADO);
+    	p.setEspera(2);
+    	listaBloqueados.inserirlistaBloqueados(p);
+    	listaProntos.removerListaProntos(p);
+    	
+    }
+    private void finalizarProcesso(Processo p){
+    	tabelaProcessos.removeTabelaProcessos(p);
+    	listaProntos.removerListaProntos(p);
+    	
     }
     
     private void executarProcesso(Processo p) {
@@ -59,6 +79,7 @@ public class Escalonador {
             // atualiza o pc
             pc++;
             // verfica qual é a instrução atual e realiza a operação correspondente
+            listaBloqueados.atualizaListaBloqueados(); //decrementa o tempo de espera	
             switch (comando) {
                 case "E/S":
                     salvarExecucao(bcp, pc, x, y);
