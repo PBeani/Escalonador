@@ -10,7 +10,7 @@ public class ListaDeProntos {
     final List<Processo> listaProntos = new ArrayList<Processo>();
     private boolean inicioPrograma = true;
 
-    public void ordenaListaProntos(List<Processo> listaProntos) {
+    public void ordenaListaProntos() {
         Collections.sort(listaProntos, new Comparator<Processo>() {
 
             public int compare(Processo o1, Processo o2) {
@@ -56,7 +56,7 @@ public class ListaDeProntos {
 
     public void inserirListaProntos(Processo processo) {
         listaProntos.add(processo);
-        ordenaListaProntos(listaProntos);
+        ordenaListaProntos();
     }
 
     public void removerListaProntos(Processo processo) {

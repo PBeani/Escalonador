@@ -1,9 +1,6 @@
 package escalonador;
 
 import escalonador.BCP.estadoDoProcesso;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Escalonador {
 
@@ -46,15 +43,12 @@ public class Escalonador {
     
     private void bloquearProcesso(Processo p){
     	p.bcp.setEstado(estadoDoProcesso.BLOQUEADO);
-    	p.setEspera(2);
+    	p.setEspera(tempoEspera);
     	listaBloqueados.inserirlistaBloqueados(p);
-    	listaProntos.removerListaProntos(p);
-    	
     }
+    
     private void finalizarProcesso(Processo p){
     	tabelaProcessos.removeTabelaProcessos(p);
-    	listaProntos.removerListaProntos(p);
-    	
     }
     
     private void executarProcesso(Processo p) {
@@ -107,17 +101,22 @@ public class Escalonador {
             // ver o que precisa ser feito ao final de cada instrucao
             i++;
         }
-        // inserir na lista de pronto
         salvarExecucao(bcp, pc, x, y);
+        // inserir na lista de pronto
+        listaProntos.inserirListaProntos(p);
     }
-
+    
+    private void rodarEscalonador() {
+    //fazer o funcionamento 
+    }
+    
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
         String diretorio = "E:\\Usp\\Sistemas Operacionais\\processos";
         // cria o escalonador
         Escalonador escalonador = new Escalonador(diretorio);
         escalonador.carregarTabelaProcessos();
-
+        escalonador.rodarEscalonador();
     }
 
 }
