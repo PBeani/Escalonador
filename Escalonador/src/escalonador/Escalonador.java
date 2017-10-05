@@ -11,6 +11,8 @@ public class Escalonador {
     TabelaDeProcessos tabelaProcessos;
     ListaDeProntos listaProntos;
     ListaDeBloqueados listaBloqueados;
+    int nInstrucoes;
+    int nTrocas;
 
     public Escalonador(String diretorio) {
         // constroi a lista que contem os arquivos que irao gerar os processos
@@ -23,6 +25,8 @@ public class Escalonador {
         listaProntos = new ListaDeProntos();
         listaBloqueados = new ListaDeBloqueados();
         tempoEspera = 2;
+        nInstrucoes = 0;
+        nTrocas = 0;
     }
 
     private void carregarTabelaProcessos() {
@@ -112,6 +116,7 @@ public class Escalonador {
             salvarExecucao(bcp, pc, x, y);
             listaProntos.inserirListaProntos(p);
         }
+        
     }
 
     private void rodarEscalonador() {
