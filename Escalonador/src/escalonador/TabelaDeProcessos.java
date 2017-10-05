@@ -35,5 +35,26 @@ public class TabelaDeProcessos {
     public void removeTabelaProcessos(Processo processo) {
         listaProcesso.remove(processo);
     }
+    
+    public LinkedList<Processo> getProcessos() {
+        return listaProcesso;
+    }
+    
+    public void atribuirCreditos() {
+        for (Processo processo : listaProcesso) {
+            processo.setCredito(processo.bcp.getPrioridade());
+        }
+    }
+    
+    public boolean redistribuirCreditos() {
+        boolean resp = true;
+        for (Processo processo : listaProcesso) {
+            if(processo.getCredito() > 0) {
+                resp = false;
+                break;
+            }
+        }
+        return resp;
+    }
 
 }

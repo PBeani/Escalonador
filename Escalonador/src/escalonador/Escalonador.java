@@ -21,7 +21,7 @@ public class Escalonador {
         quantum = GerenciadorArquivos.carregarQuantum(diretorio);
         tabelaProcessos = new TabelaDeProcessos();
         listaProntos = new ListaDeProntos();
-        listaBloqueados= new ListaDeBloqueados();
+        listaBloqueados = new ListaDeBloqueados();
         tempoEspera = 2;
     }
 
@@ -33,24 +33,31 @@ public class Escalonador {
             tabelaProcessos.inserirProcesso(processo);
         }
     }
-     
+
     // salva o estado atual no bcp
     private void salvarExecucao(BCP bcp, int pc, int x, int y) {
         bcp.setContadorDePrograma(pc);
         bcp.setX(x);
         bcp.setY(y);
+        // atualiza a lista de bloqueados, decrementando o tempo de espera
+        listaBloqueados.atualizarListaBloqueados(listaProntos);
     }
-    
-    private void bloquearProcesso(Processo p){
-    	p.bcp.setEstado(estadoDoProcesso.BLOQUEADO);
-    	p.setEspera(tempoEspera);
-    	listaBloqueados.inserirlistaBloqueados(p);
+
+    private void bloquearProcesso(Processo p) {
+        p.bcp.setEstado(estadoDoProcesso.BLOQUEADO);
+        p.setEspera(tempoEspera);
+        listaBloqueados.inserirlistaBloqueados(p);
     }
-    
-    private void finalizarProcesso(Processo p){
-    	tabelaProcessos.removeTabelaProcessos(p);
+
+    private void finalizarProcesso(Processo p) {
+        tabelaProcessos.removeTabelaProcessos(p);
     }
-    
+
+    private void redistribuirPrioridades() {
+        tabelaProcessos.atribuirCreditos();
+        listaProntos.ordenaListaProntos();
+    }
+   
     private void executarProcesso(Processo p) {
         p.setCredito(p.getCredito() - 1);
         // carrega o bcp do processo, para trazer suas informacoes para a memoria
@@ -70,7 +77,6 @@ public class Escalonador {
             // atualiza o pc
             pc++;
             // verfica qual e a instrução atual e realiza a operacao correspondente
-            listaBloqueados.atualizaListaBloqueados(); //decrementa o tempo de espera	
             switch (comando) {
                 case "E/S":
                     salvarExecucao(bcp, pc, x, y);
@@ -101,15 +107,17 @@ public class Escalonador {
             // ver o que precisa ser feito ao final de cada instrucao
             i++;
         }
-        salvarExecucao(bcp, pc, x, y);
-        // inserir na lista de pronto
-        listaProntos.inserirListaProntos(p);
+        // terminou o ciclo sem executar e/s e sem finalizar a execucao
+        if(i == quantum) {
+            salvarExecucao(bcp, pc, x, y);
+            listaProntos.inserirListaProntos(p);
+        }
     }
-    
+
     private void rodarEscalonador() {
-    //fazer o funcionamento 
+        //fazer o funcionamento 
     }
-    
+
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
         String diretorio = "E:\\Usp\\Sistemas Operacionais\\processos";

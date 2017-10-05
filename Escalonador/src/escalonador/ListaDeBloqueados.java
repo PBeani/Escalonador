@@ -7,7 +7,6 @@ import escalonador.BCP.estadoDoProcesso;
 public class ListaDeBloqueados {
 
     final LinkedList<Processo> listaBloqueados = new LinkedList<Processo>();
-    ListaDeProntos listaProntos;
     
     //insere na lista de bloqueados
     public void inserirlistaBloqueados(Processo processo) {		
@@ -20,7 +19,7 @@ public class ListaDeBloqueados {
     }
 
     //decrementa tempo de espera
-    public void atualizaListaBloqueados() {						
+    public void atualizarListaBloqueados(ListaDeProntos listaProntos) {						
         for (Processo processo : listaBloqueados) {
             processo.setEspera(processo.getEspera() - 1);
             
