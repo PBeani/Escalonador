@@ -8,9 +8,9 @@ import java.io.IOException;
 public class GerenciadorArquivos {
 
     public static Arquivo[] carregarArquivos(String diretorio) {
-        // lista que terá os arquivos que serão executados
+        // lista que tera os arquivos que serao executados
         Arquivo[] lista = new Arquivo[10];
-        // carrega a pasta que contém os arquivos
+        // carrega a pasta que contem os arquivos
         File pasta = new File(diretorio);
         // gera uma lista com os arquivos existentes na pasta
         File[] arquivos = pasta.listFiles();
@@ -25,14 +25,14 @@ public class GerenciadorArquivos {
 
                 BufferedReader leitor = new BufferedReader(new FileReader(arquivo));
                 String linha;
-                // laço que vai salvar as linhas do programa no array
+                // laco que vai salvar as linhas do programa no array
                 int j = 0;
                 while ((linha = leitor.readLine()) != null) {
                     conteudo[j] = linha;
                     j++;
                 }
 
-                // cria o arquivo e salva na lista que será usada pelo escalonador
+                // cria o arquivo e salva na lista que sera usada pelo escalonador
                 lista[i] = new Arquivo(conteudo, j - 1);
             }
 
@@ -43,7 +43,7 @@ public class GerenciadorArquivos {
     }
 
     public static int[] carregarPrioridades(String diretorio) {
-        // array que irá armazenar a prioridade dos arquivos na ordem de entrada
+        // array que ira armazenar a prioridade dos arquivos na ordem de entrada
         int[] prioridades = new int[10];
         // atualiza o endereço do arquivo que contem as prioridades
         diretorio = diretorio + "\\prioridades.txt";
@@ -67,7 +67,7 @@ public class GerenciadorArquivos {
     }
 
     public static int carregarQuantum(String diretorio) {
-        // atualiza o endereço do arquivo que contem o quantum
+        // atualiza o endereco do arquivo que contem o quantum
         diretorio = diretorio + "\\quantum.txt";
         // carrega o arquivo de quantum
         File quantumFile = new File(diretorio);

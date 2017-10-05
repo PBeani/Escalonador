@@ -12,21 +12,19 @@ public class Processo {
         espera = 0;
     }
 
-	public int getCredito() {
-		return credito;
-	}
+    public int getCredito() {
+        return credito;
+    }
 
-	public void setCredito(int credito) {
-		this.credito = credito;
-	}
+    public void setCredito(int credito) {
+        this.credito = credito;
+    }
 
-	public int getEspera() {
-		return espera;
-	}
+    public int getEspera() {
+        return espera;
+    }
 
-	public void setEspera(int espera) {
-		this.espera = espera;
-	}
-    
-
+    public void setEspera(int espera) {
+        this.espera = espera;
+    }
 }

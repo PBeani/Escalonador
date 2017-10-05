@@ -5,10 +5,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import epso.ListaDeBloqueados;
-import epso.ListaDeProntos;
-import epso.Processo;
-
 public class Escalonador {
 
     Arquivo[] listaArquivos;
@@ -20,16 +16,16 @@ public class Escalonador {
     ListaDeBloqueados listaBloqueados;
 
     public Escalonador(String diretorio) {
-        // constrói a lista que contém os arquivos que irão gerar os processos
+        // constroi a lista que contem os arquivos que irao gerar os processos
         listaArquivos = GerenciadorArquivos.carregarArquivos(diretorio);
-        // carrega a lista que contém as prioridades de cada processo
+        // carrega a lista que contem as prioridades de cada processo
         prioridades = GerenciadorArquivos.carregarPrioridades(diretorio);
-        // carrega o valor do quantum que será usado no escalonamento
+        // carrega o valor do quantum que sera usado no escalonamento
         quantum = GerenciadorArquivos.carregarQuantum(diretorio);
         tabelaProcessos = new TabelaDeProcessos();
         listaProntos = new ListaDeProntos();
         listaBloqueados= new ListaDeBloqueados();
-        tempoEspera = 0;
+        tempoEspera = 2;
     }
 
     private void carregarTabelaProcessos() {
@@ -47,6 +43,7 @@ public class Escalonador {
         bcp.setX(x);
         bcp.setY(y);
     }
+    
     private void bloquearProcesso(Processo p){
     	p.bcp.setEstado(estadoDoProcesso.BLOQUEADO);
     	p.setEspera(2);
@@ -61,24 +58,24 @@ public class Escalonador {
     }
     
     private void executarProcesso(Processo p) {
-        p.credito = p.credito - 1;
-        // carrega o bcp do processo, para trazer suas informações para a memória
+        p.setCredito(p.getCredito() - 1);
+        // carrega o bcp do processo, para trazer suas informacoes para a memoria
         BCP bcp = p.bcp;
-        // carrega o segmento de texto, que contém as instruções do programa
+        // carrega o segmento de texto, que contem as instrucoes do programa
         String[] segmentoTexto = bcp.getSegmentoDeTexto();
         // carrega o pc do programa
         int pc = bcp.getContadorDePrograma();
         // carrega o valor dos registradores
         int x = bcp.getX();
         int y = bcp.getY();
-        // roda o número de comandos até o limite dado pelo quantum, mas pode ser interrompido
+        // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser interrompido
         int i = 0;
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO) {
-            // carrega o comando que será executado
+            // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
             pc++;
-            // verfica qual é a instrução atual e realiza a operação correspondente
+            // verfica qual e a instrução atual e realiza a operacao correspondente
             listaBloqueados.atualizaListaBloqueados(); //decrementa o tempo de espera	
             switch (comando) {
                 case "E/S":
@@ -91,15 +88,15 @@ public class Escalonador {
                     salvarExecucao(bcp, pc, x, y);
                     finalizarProcesso(p);
                     break;
-                // como o número de operações é limitado, se não for nenhuma das listadas acima, será a de atribuição
+                // como o numero de operacoes e limitado, se nao for nenhuma das listadas acima, sera a de atribuicao
                 default:
                     // separa o que esta antes do = do que esta depois
                     String[] atribuicao = comando.split("=");
-                    // carrega a variavel que esta sofrendo atribuição
+                    // carrega a variavel que esta sofrendo atribuicao
                     String registrador = atribuicao[0];
-                    // carrega o valor que será atribuido
+                    // carrega o valor que sera atribuido
                     int valor = Integer.parseInt(atribuicao[1]);
-                    // verifica qual variavel receberá o valor e realiza a atribuição
+                    // verifica qual variavel recebera o valor e realiza a atribuicao
                     if (registrador.equals("X")) {
                         x = valor;
                     } else {
@@ -107,14 +104,15 @@ public class Escalonador {
                     }
                     break;
             }
-            // ver o que precisa ser feito ao final de cada instrução
+            // ver o que precisa ser feito ao final de cada instrucao
             i++;
         }
+        // inserir na lista de pronto
         salvarExecucao(bcp, pc, x, y);
     }
 
     public static void main(String[] args) {
-        // caminho para a pasta que contém os arquvios que serão usados no escalonamento
+        // caminho para a pasta que contem os arquvios que serao usados no escalonamento
         String diretorio = "E:\\Usp\\Sistemas Operacionais\\processos";
         // cria o escalonador
         Escalonador escalonador = new Escalonador(diretorio);
