@@ -1,5 +1,10 @@
 package escalonador;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import escalonador.BCP.estadoDoProcesso;
 
 public class Escalonador {
@@ -13,6 +18,8 @@ public class Escalonador {
 	ListaDeBloqueados listaBloqueados;
 	int nInstrucoes;
 	int nTrocas;
+	File logfile;
+	PrintWriter escreverLog;
 
 	public Escalonador(String diretorio) {
 		// constroi a lista que contem os arquivos que irao gerar os processos
@@ -27,7 +34,20 @@ public class Escalonador {
 		tempoEspera = 2;
 		nInstrucoes = 0;
 		nTrocas = 0;
+		File logfile = new File ("logXX.txt");
+
 	}
+	
+	private void criarLogfile() throws IOException {
+    	try {
+            logfile.createNewFile();
+    	}
+    	catch (IOException e) {
+    		System.out.println("Erro ao criar o logfile");
+    	}
+        FileWriter log = new FileWriter(logfile);
+        PrintWriter escreverLog = new PrintWriter(log);
+    }
 
 	private void carregarTabelaProcessos() {
 		for (int i = 0; i < 10; i++) {
@@ -63,6 +83,8 @@ public class Escalonador {
 	}
 
 	private void executarProcesso(Processo p) {
+		//escreve no log o processo atual que esta sendo executado
+		escreverLog.printf("Executando", p.bcp.getNome(), "/n");
 		p.setCredito(p.getCredito() - 1);
 		// carrega o bcp do processo, para trazer suas informacoes para a memoria
 		BCP bcp = p.bcp;
@@ -81,17 +103,20 @@ public class Escalonador {
 			String comando = segmentoTexto[pc];
 			// atualiza o pc
 			pc++;
-			// verfica qual e a instruÃ§Ã£o atual e realiza a operacao correspondente
+			// verfica qual e a instrucao atual e realiza a operacao correspondente
 			switch (comando) {
 			case "E/S":
 				salvarExecucao(bcp, pc, x, y);
 				bloquearProcesso(p);
+				escreverLog.printf("E/S iniciada em", p.bcp.getNome(),"/n");
+				escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instruções /n", i);
 				break;
 			case "COM":
 				break;
 			case "SAIDA":
 				salvarExecucao(bcp, pc, x, y);
 				finalizarProcesso(p);
+				escreverLog.printf(p.bcp.getNome(),"terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
 				break;
 			// como o numero de operacoes e limitado, se nao for nenhuma das listadas acima,
 			// sera a de atribuicao
@@ -117,6 +142,7 @@ public class Escalonador {
 		if (i == quantum) {
 			salvarExecucao(bcp, pc, x, y);
 			listaProntos.inserirListaProntos(p);
+			escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instruções /n", i);
 		}
 
 	}

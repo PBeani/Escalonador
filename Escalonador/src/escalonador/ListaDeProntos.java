@@ -1,5 +1,6 @@
 package escalonador;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
@@ -11,6 +12,7 @@ public class ListaDeProntos {
     final List<Processo> listaProntos = new ArrayList<Processo>();
     private boolean inicioPrograma = true;
     TabelaDeProcessos tabelaProcessos;
+    PrintWriter escreverLog;
 
     public void ordenaListaProntos() {
         Collections.sort(listaProntos, new Comparator<Processo>() {
@@ -46,7 +48,12 @@ public class ListaDeProntos {
                     }
                     if (p2.bcp.getPrioridade() < p2.bcp.getPrioridade()) {
                         return 1;
-                    } else {
+                    } 
+                    //se credito e prioridade empatam, sera comparado a ordem alfabetica novamente
+                    if(p1.bcp.getPrioridade() == p2.bcp.getPrioridade() && p1.bcp.getNome().compareToIgnoreCase(p2.bcp.getNome()) < 0) {
+                    	return -1;
+                    }
+                    else {
                         return 0;
                     }
                 }
@@ -68,10 +75,16 @@ public class ListaDeProntos {
     	for(Processo processo :tabelaProcessos.getTabelaProcesso()) {
     		inserirListaProntos(processo);
     	}
-    	ordenaListaProntos();
+    	//ordenaListaProntos();
     }
 
-	
+	public void carregarLogfile() {
+		if(inicioPrograma == true) {
+			for(Processo processo : listaProntos) {
+				escreverLog.printf("Carregando", processo.bcp.getNome(), "\n");
+			}
+		}
+	}
 		
 	
 }
