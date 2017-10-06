@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 
 public class ListaDeProntos {
 
     final List<Processo> listaProntos = new ArrayList<Processo>();
     private boolean inicioPrograma = true;
+    TabelaDeProcessos tabelaProcessos;
 
     public void ordenaListaProntos() {
         Collections.sort(listaProntos, new Comparator<Processo>() {
@@ -62,4 +64,14 @@ public class ListaDeProntos {
     public void removerListaProntos(Processo processo) {
         listaProntos.remove(processo);
     }
+    public void refazerListaDeProntos() {
+    	for(Processo processo :tabelaProcessos.getTabelaProcesso()) {
+    		inserirListaProntos(processo);
+    	}
+    	ordenaListaProntos();
+    }
+
+	
+		
+	
 }
