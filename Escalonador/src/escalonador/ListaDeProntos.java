@@ -10,7 +10,7 @@ public class ListaDeProntos {
 
     final List<Processo> listaProntos = new ArrayList<Processo>();
     private boolean inicioPrograma = true;
-    TabelaDeProcessos tabelaProcessos;
+    TabelaDeProcessos tabelaProcessos= new TabelaDeProcessos();
     PrintWriter escreverLog;
 
     public void ordenaListaProntos() {
@@ -71,10 +71,15 @@ public class ListaDeProntos {
         listaProntos.remove(processo);
     }
     public void refazerListaDeProntos() {
-    	for(Processo processo :tabelaProcessos.getTabelaProcesso()) {
+    	for(Processo processo : tabelaProcessos.listaProcesso) {
     		inserirListaProntos(processo);
     	}
     	//ordenaListaProntos();
+    }
+    public void imprimeLista(List<Processo> lista) {
+    	for(Processo processo: lista) {
+    		System.out.println(processo.bcp.getNome());
+    	}
     }
 
 	public void carregarLogfile() {
