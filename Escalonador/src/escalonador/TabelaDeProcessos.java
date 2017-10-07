@@ -29,7 +29,6 @@ public class TabelaDeProcessos {
             }
             posicao++;
         }
-
     }
     public LinkedList<Processo> getTabelaProcesso(){
     	return listaProcesso; 

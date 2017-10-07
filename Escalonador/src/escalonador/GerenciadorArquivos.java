@@ -59,7 +59,6 @@ public class GerenciadorArquivos {
                 prioridades[i] = Integer.parseInt(linha);
                 i++;
             }
-            
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
         }
@@ -80,6 +79,7 @@ public class GerenciadorArquivos {
 
             linha = leitor.readLine();
             quantum = Integer.parseInt(linha);
+
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
         }
