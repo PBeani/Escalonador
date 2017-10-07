@@ -1,7 +1,6 @@
 package escalonador;
 
 import java.util.LinkedList;
-
 import escalonador.BCP.estadoDoProcesso;
 
 public class ListaDeBloqueados {
@@ -17,7 +16,7 @@ public class ListaDeBloqueados {
     public void removerlistaBloqueados(Processo processo) {		
         listaBloqueados.remove(processo);
     }
-
+    
     //decrementa tempo de espera
     public void atualizarListaBloqueados(ListaDeProntos listaProntos) {						
         for (Processo processo : listaBloqueados) {
@@ -27,7 +26,8 @@ public class ListaDeBloqueados {
             if (processo.getEspera() == 0) {						
                 processo.bcp.setEstado(estadoDoProcesso.PRONTO);
                 removerlistaBloqueados(processo);
-                listaProntos.inserirListaProntos(processo);
+                
+				listaProntos.inserirListaProntos(processo);
             }
         }
     }

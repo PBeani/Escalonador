@@ -1,5 +1,10 @@
 package escalonador;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import escalonador.BCP.estadoDoProcesso;
 
 public class Escalonador {
@@ -13,6 +18,9 @@ public class Escalonador {
     ListaDeBloqueados listaBloqueados;
     int nInstrucoes;
     int nTrocas;
+    File logfile;
+    PrintWriter escreverLog;
+    Logfile log;
 
     public Escalonador(String diretorio) {
         // constroi a lista que contem os arquivos que irao gerar os processos
@@ -24,9 +32,23 @@ public class Escalonador {
         tabelaProcessos = new TabelaDeProcessos();
         listaProntos = new ListaDeProntos();
         listaBloqueados = new ListaDeBloqueados();
+        log = new Logfile();
         tempoEspera = 2;
         nInstrucoes = 0;
         nTrocas = 0;
+        String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
+        File logfile = new File(nomeQuantum);
+
+    }
+
+    private void criarLogfile() throws IOException {
+        try {
+            logfile.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Erro ao criar o logfile");
+        }
+        final FileWriter logWriter = new FileWriter(logfile);
+        final PrintWriter escreverLog = new PrintWriter(logWriter);
     }
 
     private void carregarTabelaProcessos() {
@@ -54,6 +76,7 @@ public class Escalonador {
     }
 
     private void finalizarProcesso(Processo p) {
+        log.atualizarMediaTrocas(p.bcp.getNumTrocas());
         tabelaProcessos.removeTabelaProcessos(p);
     }
 
@@ -61,8 +84,10 @@ public class Escalonador {
         tabelaProcessos.atribuirCreditos();
         listaProntos.ordenaListaProntos();
     }
-   
+
     private void executarProcesso(Processo p) {
+        //escreve no log o processo atual que esta sendo executado
+        escreverLog.printf("Executando", p.bcp.getNome(), "/n");
         p.setCredito(p.getCredito() - 1);
         // carrega o bcp do processo, para trazer suas informacoes para a memoria
         BCP bcp = p.bcp;
@@ -73,26 +98,35 @@ public class Escalonador {
         // carrega o valor dos registradores
         int x = bcp.getX();
         int y = bcp.getY();
-        // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser interrompido
+        // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser
+        // interrompido
         int i = 0;
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO) {
             // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
             pc++;
-            // verfica qual e a instrução atual e realiza a operacao correspondente
+            // verfica qual e a instrucao atual e realiza a operacao correspondente
             switch (comando) {
                 case "E/S":
                     salvarExecucao(bcp, pc, x, y);
                     bloquearProcesso(p);
+                    escreverLog.printf("E/S iniciada em", p.bcp.getNome(), "/n");
+                    escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
+                    log.atualizarMediaInstrucoes(i);
+                    p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
                 case "COM":
                     break;
                 case "SAIDA":
                     salvarExecucao(bcp, pc, x, y);
                     finalizarProcesso(p);
+                    escreverLog.printf(p.bcp.getNome(), "terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
+                    log.atualizarMediaInstrucoes(i);
+                    p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
-                // como o numero de operacoes e limitado, se nao for nenhuma das listadas acima, sera a de atribuicao
+                // como o numero de operacoes e limitado, se nao for nenhuma das listadas acima,
+                // sera a de atribuicao
                 default:
                     // separa o que esta antes do = do que esta depois
                     String[] atribuicao = comando.split("=");
@@ -112,17 +146,36 @@ public class Escalonador {
             i++;
         }
         // terminou o ciclo sem executar e/s e sem finalizar a execucao
-        if(i == quantum) {
+        if (i == quantum) {
             salvarExecucao(bcp, pc, x, y);
             listaProntos.inserirListaProntos(p);
+            escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
+            log.atualizarMediaInstrucoes(i);
+            p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
+
         }
-        
+
     }
 
     private void rodarEscalonador() {
-        //fazer o funcionamento 
+        // fazer o funcionamento
+        while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
+            Processo atual = listaProntos.listaProntos.remove(0);
+            if (atual != null) {										//existe elemento na lista de pronto
+                executarProcesso(atual);
+            } else {													//nao existe elemento na lista pronto
+                if (listaBloqueados.listaBloqueados.isEmpty()) {		//nao existe elemento na lista de bloq
+                    redistribuirPrioridades();
+                    listaProntos.refazerListaDeProntos();
+                } else // existe elementos na lista de bloq
+                {
+                    listaBloqueados.atualizarListaBloqueados(listaProntos);//incrementar na contagem do tempo
+                }
+            }
+        }
+        // rodou todos os processos
     }
-
+    
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
         String diretorio = "C:\\Users\\pedro\\Desktop\\processos";

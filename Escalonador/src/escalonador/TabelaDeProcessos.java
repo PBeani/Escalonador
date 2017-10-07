@@ -31,6 +31,9 @@ public class TabelaDeProcessos {
         }
 
     }
+    public LinkedList<Processo> getTabelaProcesso(){
+    	return listaProcesso; 
+    }
 
     public void removeTabelaProcessos(Processo processo) {
         listaProcesso.remove(processo);
