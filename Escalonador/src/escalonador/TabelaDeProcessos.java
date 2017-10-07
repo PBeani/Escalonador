@@ -7,32 +7,27 @@ public class TabelaDeProcessos {
     final private LinkedList<Processo> listaProcesso = new LinkedList<Processo>();
 
     public void inserirProcesso(Processo processo) {
+        // se nao tiver ninguem pra comparar, so adiciona
         if (listaProcesso.isEmpty()) {
             listaProcesso.add(processo);
         } else {
-            int posicao = 0;
-            for (Processo temp : listaProcesso) {
-                if (temp.getCredito() < processo.getCredito()
-                        && posicao < listaProcesso.size() - 1) {
-                    listaProcesso.add(posicao, processo);
+            for (int i = 0; i < listaProcesso.size(); i++) {
+                Processo temp = listaProcesso.get(i);
+                // se o processo atual tiver menos prioridade, adiciona o novo no lugar dele
+                if (temp.getCredito() < processo.getCredito()) {
+                    listaProcesso.add(i, processo);
                     break;
                 }
-                if (temp.getCredito() == processo.getCredito()
-                        && posicao < listaProcesso.size() - 1) {
-                    if (temp.bcp.getNome().compareToIgnoreCase(
-                            processo.bcp.getNome()) > 0) {
-                        posicao++;
-                        continue;
-                    } else {
-                        listaProcesso.add(posicao, processo);
+                // se tiver a mesma prioridade, ordena pelo nome
+                if (temp.getCredito() == processo.getCredito()) {
+                    if (temp.bcp.getNomeArquivo().compareToIgnoreCase(processo.bcp.getNomeArquivo()) > 0) {
+                        listaProcesso.add(i, processo);
+                        break;
                     }
                 }
-                if (listaProcesso.size() - 1 == posicao) {
-                    listaProcesso.add(processo);
-                }
-                posicao++;
             }
         }
+
     }
 
     public LinkedList<Processo> getTabelaProcesso() {

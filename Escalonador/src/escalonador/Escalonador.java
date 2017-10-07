@@ -58,12 +58,6 @@ public class Escalonador {
             Processo processo = new Processo(bcp, prioridade);
             tabelaProcessos.inserirProcesso(processo);
         }
-//        for(Processo p : tabelaProcessos.getTabelaProcesso()) {
-//            System.out.println(p.bcp.getNome());
-//            System.out.println(p.bcp.getPrioridade());
-//            System.out.println(p.getCredito());
-//            System.out.println();
-//        }
     }
 
     // salva o estado atual no bcp

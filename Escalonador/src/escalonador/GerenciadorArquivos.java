@@ -21,6 +21,8 @@ public class GerenciadorArquivos {
             for (int i = 0; i < 10; i++) {
                 // arquivo que esta sendo lido no momento
                 File arquivo = arquivos[i];
+                // nome do arquivo que e usado na primeira ordenacao
+                String nome = arquivo.getName();
                 // array que vai guardar as linhas do arquivo
                 String[] conteudo = new String[22];
 
@@ -34,7 +36,7 @@ public class GerenciadorArquivos {
                 }
 
                 // cria o arquivo e salva na lista que sera usada pelo escalonador
-                lista[i] = new Arquivo(conteudo, j - 1);
+                lista[i] = new Arquivo(nome, conteudo, j - 1);
             }
 
         } catch (IOException e) {
