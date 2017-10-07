@@ -1,8 +1,6 @@
 package escalonador;
 
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Logfile {
 	
