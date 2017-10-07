@@ -125,7 +125,7 @@ public class Escalonador {
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "E:\\Usp\\Sistemas Operacionais\\processos";
+        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
         // cria o escalonador
         Escalonador escalonador = new Escalonador(diretorio);
         escalonador.carregarTabelaProcessos();

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class GerenciadorArquivos {
 
@@ -51,15 +52,13 @@ public class GerenciadorArquivos {
         File prioridade = new File(diretorio);
 
         try {
-            BufferedReader leitor = new BufferedReader(new FileReader(prioridade));
-            String linha;
-
+            Scanner leitorPrioridade = new Scanner(new FileReader(prioridade));
             int i = 0;
-            while ((linha = leitor.readLine()) != null) {
-                prioridades[i] = Integer.parseInt(linha);
+            while (leitorPrioridade.hasNextInt()) {
+                prioridades[i] = leitorPrioridade.nextInt();
                 i++;
             }
-            
+            leitorPrioridade.close();
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
         }
@@ -83,7 +82,6 @@ public class GerenciadorArquivos {
         } catch (IOException e) {
             System.out.println("Erro ao carregar os arquivos");
         }
-        
         return quantum;
     }
 }
