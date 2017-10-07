@@ -36,7 +36,11 @@ public class Escalonador {
 		tempoEspera = 2;
 		nInstrucoes = 0;
 		nTrocas = 0;
-		File logfile = new File ("logXX.txt");
+		String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
+		File logfile = new File (nomeQuantum);
+		
+		
+		
 
 	}
 	
