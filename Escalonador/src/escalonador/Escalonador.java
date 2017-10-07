@@ -20,6 +20,7 @@ public class Escalonador {
 	int nTrocas;
 	File logfile;
 	PrintWriter escreverLog;
+	Logfile log;
 
 	public Escalonador(String diretorio) {
 		// constroi a lista que contem os arquivos que irao gerar os processos
@@ -31,6 +32,7 @@ public class Escalonador {
 		tabelaProcessos = new TabelaDeProcessos();
 		listaProntos = new ListaDeProntos();
 		listaBloqueados = new ListaDeBloqueados();
+		log = new Logfile();
 		tempoEspera = 2;
 		nInstrucoes = 0;
 		nTrocas = 0;
@@ -45,8 +47,8 @@ public class Escalonador {
     	catch (IOException e) {
     		System.out.println("Erro ao criar o logfile");
     	}
-        FileWriter log = new FileWriter(logfile);
-        PrintWriter escreverLog = new PrintWriter(log);
+        final FileWriter logWriter = new FileWriter(logfile);
+        final PrintWriter escreverLog = new PrintWriter(logWriter);
     }
 
 	private void carregarTabelaProcessos() {
@@ -74,6 +76,7 @@ public class Escalonador {
 	}
 
 	private void finalizarProcesso(Processo p) {
+		log.atualizarMediaTrocas(p.bcp.getNumTrocas());
 		tabelaProcessos.removeTabelaProcessos(p);
 	}
 
@@ -110,6 +113,8 @@ public class Escalonador {
 				bloquearProcesso(p);
 				escreverLog.printf("E/S iniciada em", p.bcp.getNome(),"/n");
 				escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instruções /n", i);
+				log.atualizarMediaInstrucoes(i);
+				p.bcp.setNumTrocas(p.bcp.getNumTrocas()+1);
 				break;
 			case "COM":
 				break;
@@ -117,6 +122,8 @@ public class Escalonador {
 				salvarExecucao(bcp, pc, x, y);
 				finalizarProcesso(p);
 				escreverLog.printf(p.bcp.getNome(),"terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
+				log.atualizarMediaInstrucoes(i);
+				p.bcp.setNumTrocas(p.bcp.getNumTrocas()+1);
 				break;
 			// como o numero de operacoes e limitado, se nao for nenhuma das listadas acima,
 			// sera a de atribuicao
@@ -143,6 +150,9 @@ public class Escalonador {
 			salvarExecucao(bcp, pc, x, y);
 			listaProntos.inserirListaProntos(p);
 			escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instruções /n", i);
+			log.atualizarMediaInstrucoes(i);
+			p.bcp.setNumTrocas(p.bcp.getNumTrocas()+1);
+
 		}
 
 	}

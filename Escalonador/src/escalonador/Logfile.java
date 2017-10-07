@@ -1,10 +1,49 @@
 package escalonador;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Logfile {
-	// fazer 2 list
-	//a primeira contendo todos os processos e armazenar o numero de troca de cada um
-	//o segundo contendo o numero de instrucoes realizadas em cada QUANTUM, e nao de cada processo
-	// fazer uma funcao que pecorra as duas listas, some todos os valores e depois divida pelo total (media)
-	//printar resultado no escreverLog
-	// nao esquecer de fechar no final do programa o logfile
+	
+    private int mediaTrocas;
+    private int mediaInstrucoes;
+    private int totalTrocas;
+    private int totalInstrucoes;
+	PrintWriter escreverLog;
+	
+	public void atualizarMediaTrocas(int x) {
+		mediaTrocas += x;
+		totalTrocas ++;
+	}
+	
+	public void atualizarMediaInstrucoes(int i) {
+		mediaInstrucoes += i;
+		totalInstrucoes ++;
+	}
+  	
+    public void fazerMedias() {
+    	mediaTrocas = mediaTrocas/totalTrocas;
+    	mediaInstrucoes = mediaInstrucoes/totalInstrucoes;
+ 	
+		escreverLog.printf("MEDIA DE TROCAS: %i /n", mediaTrocas);
+		escreverLog.printf("MEDIA DE INSTRUCOES: %i /n", mediaInstrucoes);
+		escreverLog.printf("QUANTUM %i /n"); //pegar quantum
+	    }
+
+	public int getMediaInstrucoes() {
+		return mediaInstrucoes;
+	}
+
+	public void setMediaInstrucoes(int mediaInstrucoes) {
+		this.mediaInstrucoes = mediaInstrucoes;
+	}
+
+	public int getMediaTrocas() {
+		return mediaTrocas;
+	}
+
+	public void setMediaTrocas(int mediaTrocas) {
+		this.mediaTrocas = mediaTrocas;
+	}
 }

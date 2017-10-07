@@ -9,6 +9,7 @@ public class BCP {
     private int registradorX;
     private int registradorY;
     private estadoDoProcesso estado;
+    private int numTrocas; // calcular o logfile
     
     public enum estadoDoProcesso {
         EXECUTANDO, PRONTO, BLOQUEADO;
@@ -67,4 +68,12 @@ public class BCP {
     public void setEstado(estadoDoProcesso e) {
         estado = e;
     }
+
+	public int getNumTrocas() {
+		return numTrocas;
+	}
+
+	public void setNumTrocas(int numTrocas) {
+		this.numTrocas = numTrocas;
+	}
 }
