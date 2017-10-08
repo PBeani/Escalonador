@@ -24,6 +24,7 @@ public class Escalonador {
     PrintWriter escreverLog;
     FileWriter logWriter;
     Logfile log;
+    
 
     public Escalonador(String diretorio) {
         // constroi a lista que contem os arquivos que irao gerar os processos
@@ -52,7 +53,6 @@ public class Escalonador {
         } catch (IOException e) {
             System.out.println("Erro ao criar o logfile");
         }
-
     }
 
     private void carregarTabelaElistas() {
@@ -217,19 +217,28 @@ public class Escalonador {
 
         }
         // rodou todos os processos
+        double mediaInstrucoes = log.fazerMediaInstrucao();
+        int mediaTrocas = log.fazerMediaTrocas();
+        escreverLog.printf("MEDIA DE TROCAS: ");
+    	escreverLog.println(mediaTrocas);
+    	escreverLog.printf("MEDIA DE INSTRUCOES: ");
+    	escreverLog.println(mediaInstrucoes);
+    	escreverLog.printf("QUANTUM: ");
+    	escreverLog.println(quantum);
         escreverLog.close();
-        log.fazerMedias();
-    }
+        }
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
+        String diretorio = "C:\\Users\\cliente\\Desktop\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
         escalonador.criarLogfile(diretorio);
         escalonador.carregarTabelaElistas();
         escalonador.rodarEscalonador();
+        
+        
 
     }
 
