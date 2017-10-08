@@ -62,6 +62,7 @@ public class Escalonador {
             Processo processo = new Processo(bcp, prioridade);
             tabelaProcessos.inserirProcesso(processo);
             listaProntos.inserirListaProntos(processo);
+            listaProntos.ordenaListaProntos();
         }
         for (Processo processo : listaProntos.getList()) {
             escreverLog.println("Carregando " + processo.bcp.getNome());
@@ -181,7 +182,7 @@ public class Escalonador {
         if (i == quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO) {
             salvarExecucao(bcp, pc, x, y);
             listaProntos.inserirListaProntos(p);
-
+            p.setExecutouAgora(true);
             escreverLog.printf("Interrompendo ");
             escreverLog.printf(p.bcp.getNome());
             escreverLog.printf(" apos ");
@@ -201,6 +202,7 @@ public class Escalonador {
         // fazer o funcionamento
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
+            listaProntos.atualizarStatus();
             listaProntos.imprimeLista();
             listaBloqueados.imprimeLista();
             System.out.println("-----------------------------------------------------------------------------------------");
@@ -221,7 +223,7 @@ public class Escalonador {
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
+        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
