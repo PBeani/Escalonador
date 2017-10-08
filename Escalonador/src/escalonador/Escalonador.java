@@ -41,7 +41,6 @@ public class Escalonador {
         tempoEspera = 3;
         nInstrucoes = 0;
         nTrocas = 0;
-        //System.out.println(nomeQuantum);
 
     }
 
@@ -115,10 +114,8 @@ public class Escalonador {
         // interrompido
         int i = 0;
 
-        //System.out.println(bcp.getNome());
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO && tabelaProcessos.getTabelaProcesso().contains(p)) {
 
-            //System.out.println(pc);
             // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
@@ -152,7 +149,6 @@ public class Escalonador {
                     escreverLog.print(p.bcp.getX());
                     escreverLog.printf(" e Y=");
                     escreverLog.print(p.bcp.getY());
-                    //escreverLog.printf("terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
                     escreverLog.println("");
 
                     log.atualizarMediaInstrucoes(i + 1);
@@ -175,7 +171,6 @@ public class Escalonador {
                     }
                     break;
             }
-            // ver o que precisa ser feito ao final de cada instrucao
             i++;
         }
         // terminou o ciclo sem executar e/s e sem finalizar a execucao
@@ -190,7 +185,6 @@ public class Escalonador {
             escreverLog.printf(" instrucoes");
             escreverLog.println("");
 
-            //escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
             log.atualizarMediaInstrucoes(i);
             p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
 
@@ -199,13 +193,11 @@ public class Escalonador {
     }
 
     private void rodarEscalonador() {
-        // fazer o funcionamento
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
             listaProntos.atualizarStatus();
             listaProntos.imprimeLista();
             listaBloqueados.imprimeLista();
-            System.out.println("-----------------------------------------------------------------------------------------");
             if (tabelaProcessos.redistribuirCreditos()) {
                 redistribuirPrioridades();
             }
