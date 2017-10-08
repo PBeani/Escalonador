@@ -24,7 +24,7 @@ public class Logfile {
 		return  mediaInstrucoes/totalInstrucoes;		
 	}
 	
-	public int fazerMediaTrocas() {
+	public double fazerMediaTrocas() {
 		return mediaTrocas/totalTrocas;
 	}
 

@@ -196,8 +196,7 @@ public class Escalonador {
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
             listaProntos.atualizarStatus();
-            listaProntos.imprimeLista();
-            listaBloqueados.imprimeLista();
+
             if (tabelaProcessos.redistribuirCreditos()) {
                 redistribuirPrioridades();
             }
@@ -210,7 +209,7 @@ public class Escalonador {
         }
         // rodou todos os processos
         double mediaInstrucoes = log.fazerMediaInstrucao();
-        int mediaTrocas = log.fazerMediaTrocas();
+        double mediaTrocas = log.fazerMediaTrocas();
         escreverLog.printf("MEDIA DE TROCAS: ");
     	escreverLog.println(mediaTrocas);
     	escreverLog.printf("MEDIA DE INSTRUCOES: ");
