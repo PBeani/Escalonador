@@ -28,6 +28,9 @@ public class ListaDeBloqueados {
                 removerlistaBloqueados(processo);
 
                 listaProntos.inserirListaProntos(processo);
+                System.out.printf(processo.bcp.getNome());
+                System.out.printf("credito %d \n", processo.getCredito());
+                listaProntos.imprimeLista();
             }
         }
     }

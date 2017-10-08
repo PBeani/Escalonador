@@ -36,7 +36,7 @@ public class Escalonador {
         listaProntos = new ListaDeProntos();
         listaBloqueados = new ListaDeBloqueados();
         log = new Logfile();
-        tempoEspera = 2;
+        tempoEspera = 3;
         nInstrucoes = 0;
         nTrocas = 0;
         //System.out.println(nomeQuantum);
@@ -108,11 +108,11 @@ public class Escalonador {
         // interrompido
         int i = 0;
 
-        System.out.println(bcp.getNome());
+        //System.out.println(bcp.getNome());
 
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO && tabelaProcessos.getTabelaProcesso().contains(p)) {
 
-            System.out.println(pc);
+            //System.out.println(pc);
             // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc

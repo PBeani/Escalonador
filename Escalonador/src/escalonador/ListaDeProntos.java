@@ -34,6 +34,7 @@ public class ListaDeProntos {
                 if (p1.getCredito() == p2.getCredito()) {
                     //prioridades iguais quando inicia-se o programa
                     if (inicioPrograma == true) {
+                        inicioPrograma = false;
                         if (p1.bcp.getNomeArquivo().compareToIgnoreCase(p2.bcp.getNomeArquivo()) < 0) {
                             return -1;
                         } else {
@@ -81,8 +82,8 @@ public class ListaDeProntos {
         //ordenaListaProntos();
     }
 
-    public void imprimeLista(List<Processo> lista) {
-        for (Processo processo : lista) {
+    public void imprimeLista() {
+        for (Processo processo : listaProntos) {
             System.out.println(processo.bcp.getNome());
         }
     }
