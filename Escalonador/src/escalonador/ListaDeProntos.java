@@ -109,7 +109,11 @@ public class ListaDeProntos {
             return listaProntos.remove(0);
         }
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6e2980191b365d2e234c0b476e72bb771b009c99
     public List<Processo> getList() {
         return listaProntos;
     }
