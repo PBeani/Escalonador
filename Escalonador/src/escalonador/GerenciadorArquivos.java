@@ -72,7 +72,7 @@ public class GerenciadorArquivos {
         diretorio = diretorio + "\\quantum.txt";
         // carrega o arquivo de quantum
         File quantumFile = new File(diretorio);
-        // irá guargar o valor do quantum
+        // ira guardar o valor do quantum
         int quantum = 0;
         
         try {

@@ -109,12 +109,6 @@ public class ListaDeProntos {
             return listaProntos.remove(0);
         }
     }
-
-    public void imprimeLista() {
-        for (Processo processo : listaProntos) {
-            System.out.println(processo.bcp.getNome());
-        }
-    }
     
     public List<Processo> getList() {
         return listaProntos;

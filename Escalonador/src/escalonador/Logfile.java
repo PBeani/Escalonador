@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 public class Logfile {
 	
-    private int mediaTrocas;
+    private double mediaTrocas;
     private double mediaInstrucoes;
     private int totalTrocas;
     private double totalInstrucoes;
@@ -24,7 +24,7 @@ public class Logfile {
 		return  mediaInstrucoes/totalInstrucoes;		
 	}
 	
-	public int fazerMediaTrocas() {
+	public double fazerMediaTrocas() {
 		return mediaTrocas/totalTrocas;
 	}
 
@@ -36,7 +36,7 @@ public class Logfile {
 		this.mediaInstrucoes = mediaInstrucoes;
 	}
 
-	public int getMediaTrocas() {
+	public double getMediaTrocas() {
 		return mediaTrocas;
 	}
 

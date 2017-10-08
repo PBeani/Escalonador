@@ -32,13 +32,4 @@ public class ListaDeBloqueados {
             }
         }
     }
-    
-    public void imprimeLista() {
-        System.out.println("Bloqeuados: ");
-        for (Processo processo : listaBloqueados) {
-            System.out.print(processo.bcp.getNome() + " Creditos: " + processo.getCredito() +" Tempo de espera: " + processo.getEspera() +", ");
-        }
-        System.out.println("");
-        System.out.println("");
     }
-}

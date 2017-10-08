@@ -1,11 +1,8 @@
 package escalonador;
-// AMANDA N EH POSSIVEL
-import java.awt.List;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 
 import escalonador.BCP.estadoDoProcesso;
 
@@ -18,8 +15,6 @@ public class Escalonador {
     TabelaDeProcessos tabelaProcessos;
     ListaDeProntos listaProntos;
     ListaDeBloqueados listaBloqueados;
-    int nInstrucoes;
-    int nTrocas;
     File logfile;
     PrintWriter escreverLog;
     FileWriter logWriter;
@@ -39,9 +34,6 @@ public class Escalonador {
         log = new Logfile();
         // t de 2 processos  executarem + t do turno que ele entrou
         tempoEspera = 3;
-        nInstrucoes = 0;
-        nTrocas = 0;
-        //System.out.println(nomeQuantum);
 
     }
 
@@ -111,14 +103,11 @@ public class Escalonador {
         // carrega o valor dos registradores
         int x = bcp.getX();
         int y = bcp.getY();
-        // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser
-        // interrompido
+        // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser interrompido
         int i = 0;
 
-        //System.out.println(bcp.getNome());
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO && tabelaProcessos.getTabelaProcesso().contains(p)) {
 
-            //System.out.println(pc);
             // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
@@ -152,7 +141,6 @@ public class Escalonador {
                     escreverLog.print(p.bcp.getX());
                     escreverLog.printf(" e Y=");
                     escreverLog.print(p.bcp.getY());
-                    //escreverLog.printf("terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
                     escreverLog.println("");
 
                     log.atualizarMediaInstrucoes(i + 1);
@@ -189,8 +177,6 @@ public class Escalonador {
             escreverLog.print(i);
             escreverLog.printf(" instrucoes");
             escreverLog.println("");
-
-            //escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
             log.atualizarMediaInstrucoes(i);
             p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
 
@@ -203,9 +189,6 @@ public class Escalonador {
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
             listaProntos.atualizarStatus();
-            listaProntos.imprimeLista();
-            listaBloqueados.imprimeLista();
-            System.out.println("-----------------------------------------------------------------------------------------");
             if (tabelaProcessos.redistribuirCreditos()) {
                 redistribuirPrioridades();
             }
@@ -218,7 +201,7 @@ public class Escalonador {
         }
         // rodou todos os processos
         double mediaInstrucoes = log.fazerMediaInstrucao();
-        int mediaTrocas = log.fazerMediaTrocas();
+        double mediaTrocas = log.fazerMediaTrocas();
         escreverLog.printf("MEDIA DE TROCAS: ");
     	escreverLog.println(mediaTrocas);
     	escreverLog.printf("MEDIA DE INSTRUCOES: ");
@@ -230,16 +213,13 @@ public class Escalonador {
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\cliente\\Desktop\\processos";
+        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
         escalonador.criarLogfile(diretorio);
         escalonador.carregarTabelaElistas();
         escalonador.rodarEscalonador();
-        
-        
-
-    }
+            }
 
 }
