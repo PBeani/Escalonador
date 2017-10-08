@@ -72,8 +72,6 @@ public class Escalonador {
         bcp.setContadorDePrograma(pc);
         bcp.setX(x);
         bcp.setY(y);
-        // atualiza a lista de bloqueados, decrementando o tempo de espera
-        listaBloqueados.atualizarListaBloqueados(listaProntos);
     }
 
     private void bloquearProcesso(Processo p) {
@@ -180,9 +178,9 @@ public class Escalonador {
             if (atual != null) { // existe elemento na lista de pronto
                 atual.bcp.setEstado(estadoDoProcesso.EXECUTANDO);
                 executarProcesso(atual);
-            } else { // nao existe elemento na lista pronto
-                listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
             }
+            listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
+            
         }
         // rodou todos os processos
         
