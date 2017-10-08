@@ -40,17 +40,19 @@ public class Escalonador {
         nInstrucoes = 0;
         nTrocas = 0;
         //System.out.println(nomeQuantum);
+        
 
     }
 
-    @SuppressWarnings("resource")
+
 	private void criarLogfile() {
         try {
             String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
             File logfile = new File("C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos",nomeQuantum);
             FileWriter logWriter = new FileWriter(logfile);
-            PrintWriter escreverLog = new PrintWriter(logWriter);
+			PrintWriter escreverLog = new PrintWriter(logWriter);
             escreverLog.println("oiiiiii sumido rs");
+            logWriter.write("oiii sumido rs");
             System.out.println("entrei aqui");
             if(logfile.createNewFile()) {
                 System.out.println("criei log");
