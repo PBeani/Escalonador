@@ -34,6 +34,11 @@ public class Escalonador {
         log = new Logfile();
         // t de 2 processos  executarem + t do turno que ele entrou
         tempoEspera = 3;
+<<<<<<< HEAD
+=======
+        nInstrucoes = 0;
+        nTrocas = 0;
+>>>>>>> 6e2980191b365d2e234c0b476e72bb771b009c99
 
     }
 
@@ -163,7 +168,6 @@ public class Escalonador {
                     }
                     break;
             }
-            // ver o que precisa ser feito ao final de cada instrucao
             i++;
         }
         // terminou o ciclo sem executar e/s e sem finalizar a execucao
@@ -177,6 +181,10 @@ public class Escalonador {
             escreverLog.print(i);
             escreverLog.printf(" instrucoes");
             escreverLog.println("");
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e2980191b365d2e234c0b476e72bb771b009c99
             log.atualizarMediaInstrucoes(i);
             p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
 
@@ -185,10 +193,13 @@ public class Escalonador {
     }
 
     private void rodarEscalonador() {
-        // fazer o funcionamento
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
             listaProntos.atualizarStatus();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e2980191b365d2e234c0b476e72bb771b009c99
             if (tabelaProcessos.redistribuirCreditos()) {
                 redistribuirPrioridades();
             }
