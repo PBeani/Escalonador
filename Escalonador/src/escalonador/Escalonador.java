@@ -1,5 +1,5 @@
 package escalonador;
-
+// AMANDA N EH POSSIVEL
 import java.awt.List;
 import java.io.File;
 import java.io.FileWriter;
