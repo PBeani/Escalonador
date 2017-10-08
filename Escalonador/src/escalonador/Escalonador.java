@@ -46,7 +46,7 @@ public class Escalonador {
     private void criarLogfile() {
         try {
             String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
-            logfile = new File("C:\\Users\\pedro\\Desktop\\processos", nomeQuantum);
+            logfile = new File("C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos", nomeQuantum);
             escreverLog = new PrintWriter(logfile);
         } catch (IOException e) {
             System.out.println("Erro ao criar o logfile");
@@ -92,7 +92,8 @@ public class Escalonador {
     private void executarProcesso(Processo p) {
 
         // escreve no log o processo atual que esta sendo executado
-        escreverLog.printf("Executando:", p.bcp.getNome(), "/n");
+        escreverLog.printf("Executando: ");
+    	escreverLog.println(p.bcp.getNome());
         p.setCredito(p.getCredito() - 1);
         // carrega o bcp do processo, para trazer suas informacoes para a memoria
         BCP bcp = p.bcp;
@@ -122,8 +123,16 @@ public class Escalonador {
                 case "E/S":
                     salvarExecucao(bcp, pc, x, y);
                     bloquearProcesso(p);
-                    escreverLog.printf("E/S iniciada em", p.bcp.getNome(), "/n");
-                    escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
+                    escreverLog.printf("E/S iniciada em ");
+                	escreverLog.println(p.bcp.getNome());
+                	
+                    escreverLog.printf("Interrompendo ");
+                	escreverLog.printf(p.bcp.getNome());
+                	escreverLog.printf(" apos ");
+                	escreverLog.print(i);
+                	escreverLog.printf(" instrucoes");
+                	escreverLog.println("");
+                	
                     log.atualizarMediaInstrucoes(i);
                     p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
@@ -132,7 +141,14 @@ public class Escalonador {
                 case "SAIDA":
                     salvarExecucao(bcp, pc, x, y);
                     finalizarProcesso(p);
-                    escreverLog.printf(p.bcp.getNome(), "terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
+                	escreverLog.printf(p.bcp.getNome());
+                    escreverLog.printf(" terminado. X=");
+                    escreverLog.print(p.bcp.getX());
+                    escreverLog.printf(" e Y=");
+                    escreverLog.print(p.bcp.getY());
+                    //escreverLog.printf("terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
+                    escreverLog.println("");
+                    
                     log.atualizarMediaInstrucoes(i);
                     p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
@@ -160,7 +176,15 @@ public class Escalonador {
         if (i == quantum) {
             salvarExecucao(bcp, pc, x, y);
             listaProntos.inserirListaProntos(p);
-            escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
+            
+            escreverLog.printf("Interrompendo ");
+        	escreverLog.printf(p.bcp.getNome());
+        	escreverLog.printf(" apos ");
+        	escreverLog.print(i);
+        	escreverLog.printf(" instrucoes");
+        	escreverLog.println("");
+
+            //escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
             log.atualizarMediaInstrucoes(i);
             p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
 
@@ -182,11 +206,12 @@ public class Escalonador {
         }
         // rodou todos os processos
         escreverLog.close();
+        log.fazerMedias();
     }
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
+        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
