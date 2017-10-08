@@ -86,7 +86,7 @@ public class ListaDeProntos {
                 }
                 //se tiver nenhum outro processo com um credito menor do que estou inserindo
                 if(i==listaProntos.size()-1) {
-                	listaProntos.add(i, processo);
+                	listaProntos.add(processo);
                     break;
                 }
             }
