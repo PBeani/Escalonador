@@ -9,8 +9,7 @@ import java.util.Comparator;
 public class ListaDeProntos {
 
     final List<Processo> listaProntos = new ArrayList<Processo>();
-    public boolean inicioPrograma = true;
-    TabelaDeProcessos tabelaProcessos = new TabelaDeProcessos();
+    public boolean ordernarNome = true;
     PrintWriter escreverLog;
 
     public void ordenaListaProntos() {
@@ -33,8 +32,7 @@ public class ListaDeProntos {
                 //se os creditos forem iguais, tratar os casos
                 if (p1.getCredito() == p2.getCredito()) {
                     //prioridades iguais quando inicia-se o programa
-                    if (inicioPrograma == true) {
-                        inicioPrograma = false;
+                    if (ordernarNome == true) {
                         if (p1.bcp.getNomeArquivo().compareToIgnoreCase(p2.bcp.getNomeArquivo()) < 0) {
                             return -1;
                         } else {
@@ -75,24 +73,13 @@ public class ListaDeProntos {
         }
     }
 
-    public void refazerListaDeProntos() {
-        for (Processo processo : tabelaProcessos.listaProcesso) {
-            inserirListaProntos(processo);
-        }
-        //ordenaListaProntos();
-    }
-
     public void imprimeLista() {
         for (Processo processo : listaProntos) {
             System.out.println(processo.bcp.getNome());
         }
     }
-
-    public void carregarLogfile() {
-        if (inicioPrograma == true) {
-            for (Processo processo : listaProntos) {
-                escreverLog.printf("Carregando", processo.bcp.getNome(), "\n");
-            }
-        }
+    
+    public List<Processo> getList() {
+        return listaProntos;
     }
 }

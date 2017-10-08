@@ -36,6 +36,7 @@ public class Escalonador {
         listaProntos = new ListaDeProntos();
         listaBloqueados = new ListaDeBloqueados();
         log = new Logfile();
+        // t de 2 processos  executarem + t do turno que ele entrou
         tempoEspera = 3;
         nInstrucoes = 0;
         nTrocas = 0;
@@ -43,10 +44,10 @@ public class Escalonador {
 
     }
 
-    private void criarLogfile() {
+    private void criarLogfile(String diretorio) {
         try {
             String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
-            logfile = new File("C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos", nomeQuantum);
+            logfile = new File(diretorio, nomeQuantum);
             escreverLog = new PrintWriter(logfile);
         } catch (IOException e) {
             System.out.println("Erro ao criar o logfile");
@@ -62,7 +63,10 @@ public class Escalonador {
             tabelaProcessos.inserirProcesso(processo);
             listaProntos.inserirListaProntos(processo);
         }
-        listaProntos.inicioPrograma = false;
+        for (Processo processo : listaProntos.getList()) {
+            escreverLog.println("Carregando " + processo.bcp.getNome());
+        }
+        listaProntos.ordernarNome = false;
     }
 
     // salva o estado atual no bcp
@@ -85,15 +89,17 @@ public class Escalonador {
     }
 
     private void redistribuirPrioridades() {
+        listaProntos.ordernarNome = true;
         tabelaProcessos.atribuirCreditos();
         listaProntos.ordenaListaProntos();
+        listaProntos.ordernarNome = false;
     }
 
     private void executarProcesso(Processo p) {
 
         // escreve no log o processo atual que esta sendo executado
         escreverLog.printf("Executando: ");
-    	escreverLog.println(p.bcp.getNome());
+        escreverLog.println(p.bcp.getNome());
         p.setCredito(p.getCredito() - 1);
         // carrega o bcp do processo, para trazer suas informacoes para a memoria
         BCP bcp = p.bcp;
@@ -109,7 +115,6 @@ public class Escalonador {
         int i = 0;
 
         //System.out.println(bcp.getNome());
-
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO && tabelaProcessos.getTabelaProcesso().contains(p)) {
 
             //System.out.println(pc);
@@ -124,16 +129,16 @@ public class Escalonador {
                     salvarExecucao(bcp, pc, x, y);
                     bloquearProcesso(p);
                     escreverLog.printf("E/S iniciada em ");
-                	escreverLog.println(p.bcp.getNome());
-                	
+                    escreverLog.println(p.bcp.getNome());
+
                     escreverLog.printf("Interrompendo ");
-                	escreverLog.printf(p.bcp.getNome());
-                	escreverLog.printf(" apos ");
-                	escreverLog.print(i);
-                	escreverLog.printf(" instrucoes");
-                	escreverLog.println("");
-                	
-                    log.atualizarMediaInstrucoes(i);
+                    escreverLog.printf(p.bcp.getNome());
+                    escreverLog.printf(" apos ");
+                    escreverLog.print(i + 1);
+                    escreverLog.printf(" instrucoes");
+                    escreverLog.println("");
+
+                    log.atualizarMediaInstrucoes(i + 1);
                     p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
                 case "COM":
@@ -141,15 +146,15 @@ public class Escalonador {
                 case "SAIDA":
                     salvarExecucao(bcp, pc, x, y);
                     finalizarProcesso(p);
-                	escreverLog.printf(p.bcp.getNome());
+                    escreverLog.printf(p.bcp.getNome());
                     escreverLog.printf(" terminado. X=");
                     escreverLog.print(p.bcp.getX());
                     escreverLog.printf(" e Y=");
                     escreverLog.print(p.bcp.getY());
                     //escreverLog.printf("terminado. X=%i e Y=%i.", p.bcp.getX(), p.bcp.getY());
                     escreverLog.println("");
-                    
-                    log.atualizarMediaInstrucoes(i);
+
+                    log.atualizarMediaInstrucoes(i + 1);
                     p.bcp.setNumTrocas(p.bcp.getNumTrocas() + 1);
                     break;
                 // como o numero de operacoes e limitado, se nao for nenhuma das listadas acima,
@@ -173,16 +178,16 @@ public class Escalonador {
             i++;
         }
         // terminou o ciclo sem executar e/s e sem finalizar a execucao
-        if (i == quantum) {
+        if (i == quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO) {
             salvarExecucao(bcp, pc, x, y);
             listaProntos.inserirListaProntos(p);
-            
+
             escreverLog.printf("Interrompendo ");
-        	escreverLog.printf(p.bcp.getNome());
-        	escreverLog.printf(" apos ");
-        	escreverLog.print(i);
-        	escreverLog.printf(" instrucoes");
-        	escreverLog.println("");
+            escreverLog.printf(p.bcp.getNome());
+            escreverLog.printf(" apos ");
+            escreverLog.print(i);
+            escreverLog.printf(" instrucoes");
+            escreverLog.println("");
 
             //escreverLog.printf("Interrompendo", p.bcp.getNome(), "apos %i instru��es /n", i);
             log.atualizarMediaInstrucoes(i);
@@ -195,7 +200,9 @@ public class Escalonador {
     private void rodarEscalonador() {
         // fazer o funcionamento
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
-            //if(listaProntos.listaProntos.isEmpty()) listaProntos.refazerListaDeProntos();
+            if (tabelaProcessos.redistribuirCreditos()) {
+                redistribuirPrioridades();
+            }
             Processo atual = listaProntos.removerListaProntos();
             if (atual != null) { // existe elemento na lista de pronto
                 atual.bcp.setEstado(estadoDoProcesso.EXECUTANDO);
@@ -211,12 +218,12 @@ public class Escalonador {
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
+        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
+        escalonador.criarLogfile(diretorio);
         escalonador.carregarTabelaElistas();
-        escalonador.criarLogfile();
         escalonador.rodarEscalonador();
 
     }
