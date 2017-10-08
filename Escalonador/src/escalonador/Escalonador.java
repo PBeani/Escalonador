@@ -40,29 +40,17 @@ public class Escalonador {
         nInstrucoes = 0;
         nTrocas = 0;
         //System.out.println(nomeQuantum);
-        
 
     }
 
-
-	private void criarLogfile() {
+    private void criarLogfile() {
         try {
             String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
-            File logfile = new File("C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos",nomeQuantum);
-            FileWriter logWriter = new FileWriter(logfile);
-			PrintWriter escreverLog = new PrintWriter(logWriter);
-            escreverLog.println("oiiiiii sumido rs");
-            logWriter.write("oiii sumido rs");
-            System.out.println("entrei aqui");
-            if(logfile.createNewFile()) {
-                System.out.println("criei log");
-            }
-            else	System.out.println("Arquivo não criado, talvez ele já exista");
-
+            logfile = new File("C:\\Users\\pedro\\Desktop\\processos", nomeQuantum);
+            escreverLog = new PrintWriter(logfile);
         } catch (IOException e) {
             System.out.println("Erro ao criar o logfile");
         }
-
 
     }
 
@@ -118,18 +106,18 @@ public class Escalonador {
         // roda o numero de comandos ate o limite dado pelo quantum, mas pode ser
         // interrompido
         int i = 0;
-        
-            System.out.println(bcp.getNome());
-            
+
+        System.out.println(bcp.getNome());
+
         while (i < quantum && bcp.getEstado() == estadoDoProcesso.EXECUTANDO && tabelaProcessos.getTabelaProcesso().contains(p)) {
-            
+
             System.out.println(pc);
             // carrega o comando que sera executado
             String comando = segmentoTexto[pc];
             // atualiza o pc
             pc++;
             // verfica qual e a instrucao atual e realiza a operacao correspondente
-            
+
             switch (comando) {
                 case "E/S":
                     salvarExecucao(bcp, pc, x, y);
@@ -190,23 +178,15 @@ public class Escalonador {
                 executarProcesso(atual);
             }
             listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
-            
+
         }
         // rodou todos os processos
-        try {
-			logWriter.close();
-			escreverLog.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			System.out.println("erro ao fechar log");
-			e.printStackTrace();
-		}
-        
+        escreverLog.close();
     }
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
+        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
