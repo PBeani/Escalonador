@@ -223,7 +223,7 @@ public class Escalonador {
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\pedro\\Desktop\\processos";
+        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
