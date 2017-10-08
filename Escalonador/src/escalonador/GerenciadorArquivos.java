@@ -48,7 +48,7 @@ public class GerenciadorArquivos {
     public static int[] carregarPrioridades(String diretorio) {
         // array que ira armazenar a prioridade dos arquivos na ordem de entrada
         int[] prioridades = new int[10];
-        // atualiza o endereço do arquivo que contem as prioridades
+        // atualiza o endereco do arquivo que contem as prioridades
         diretorio = diretorio + "\\prioridades.txt";
         // carrega o arquivo de prioridades
         File prioridade = new File(diretorio);

@@ -5,9 +5,9 @@ import java.io.PrintWriter;
 public class Logfile {
 	
     private int mediaTrocas;
-    private int mediaInstrucoes;
+    private double mediaInstrucoes;
     private int totalTrocas;
-    private int totalInstrucoes;
+    private double totalInstrucoes;
 	PrintWriter escreverLog;
 	
 	public void atualizarMediaTrocas(int x) {
@@ -23,13 +23,21 @@ public class Logfile {
     public void fazerMedias() {
     	mediaTrocas = mediaTrocas/totalTrocas;
     	mediaInstrucoes = mediaInstrucoes/totalInstrucoes;
- 	
-		escreverLog.printf("MEDIA DE TROCAS: %i /n", mediaTrocas);
-		escreverLog.printf("MEDIA DE INSTRUCOES: %i /n", mediaInstrucoes);
-		escreverLog.printf("QUANTUM %i /n"); //pegar quantum
+    	System.out.printf("MEDIA DE TROCAS: %d \n", mediaTrocas);
+    	System.out.printf("MEDIA DE INSTRUCOES: %2f \n", mediaInstrucoes);
+    	
+    	//escreverLog.printf("MEDIA DE TROCAS: ");
+    	//escreverLog.println(mediaTrocas);
+    	//escreverLog.printf("MEDIA DE INSTRUCOES: ");
+    	//escreverLog.println(mediaInstrucoes);
+    	//escreverLog.printf("QUANTUM: ");
+
+		//escreverLog.printf("MEDIA DE TROCAS: %d \n", mediaTrocas);
+		//escreverLog.printf("MEDIA DE INSTRUCOES: %i /n", mediaInstrucoes);
+		//escreverLog.printf("QUANTUM %i /n"); //pegar quantum
 	    }
 
-	public int getMediaInstrucoes() {
+	public double getMediaInstrucoes() {
 		return mediaInstrucoes;
 	}
 

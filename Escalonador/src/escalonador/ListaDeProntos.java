@@ -9,8 +9,7 @@ import java.util.Comparator;
 public class ListaDeProntos {
 
     final List<Processo> listaProntos = new ArrayList<Processo>();
-    private boolean inicioPrograma = true;
-    TabelaDeProcessos tabelaProcessos;
+    public boolean ordernarNome = true;
     PrintWriter escreverLog;
 
     public void ordenaListaProntos() {
@@ -33,8 +32,8 @@ public class ListaDeProntos {
                 //se os creditos forem iguais, tratar os casos
                 if (p1.getCredito() == p2.getCredito()) {
                     //prioridades iguais quando inicia-se o programa
-                    if (inicioPrograma == true) {
-                        if (p1.bcp.getNome().compareToIgnoreCase(p2.bcp.getNome()) < 0) {
+                    if (ordernarNome == true) {
+                        if (p1.bcp.getNomeArquivo().compareToIgnoreCase(p2.bcp.getNomeArquivo()) < 0) {
                             return -1;
                         } else {
                             return 1;
@@ -47,12 +46,11 @@ public class ListaDeProntos {
                     }
                     if (p2.bcp.getPrioridade() < p2.bcp.getPrioridade()) {
                         return 1;
-                    } 
-                    //se credito e prioridade empatam, sera comparado a ordem alfabetica novamente
-                    if(p1.bcp.getPrioridade() == p2.bcp.getPrioridade() && p1.bcp.getNome().compareToIgnoreCase(p2.bcp.getNome()) < 0) {
-                    	return -1;
                     }
-                    else {
+                    //se credito e prioridade empatam, sera comparado a ordem alfabetica novamente
+                    if (p1.bcp.getPrioridade() == p2.bcp.getPrioridade() && p1.bcp.getNome().compareToIgnoreCase(p2.bcp.getNome()) < 0) {
+                        return -1;
+                    } else {
                         return 0;
                     }
                 }
@@ -67,23 +65,21 @@ public class ListaDeProntos {
         ordenaListaProntos();
     }
 
-    public void removerListaProntos(Processo processo) {
-        listaProntos.remove(processo);
-    }
-    public void refazerListaDeProntos() {
-    	for(Processo processo :tabelaProcessos.getTabelaProcesso()) {
-    		inserirListaProntos(processo);
-    	}
-    	//ordenaListaProntos();
+    public Processo removerListaProntos() {
+        if (listaProntos.isEmpty()) {
+            return null;
+        } else {
+            return listaProntos.remove(0);
+        }
     }
 
-	public void carregarLogfile() {
-		if(inicioPrograma == true) {
-			for(Processo processo : listaProntos) {
-				escreverLog.printf("Carregando", processo.bcp.getNome(), "\n");
-			}
-		}
-	}
-		
-	
+    public void imprimeLista() {
+        for (Processo processo : listaProntos) {
+            System.out.println(processo.bcp.getNome());
+        }
+    }
+    
+    public List<Processo> getList() {
+        return listaProntos;
+    }
 }

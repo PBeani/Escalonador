@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class TabelaDeProcessos {
 
-    final private LinkedList<Processo> listaProcesso = new LinkedList<Processo>();
+    final LinkedList<Processo> listaProcesso = new LinkedList<Processo>();
 
     public void inserirProcesso(Processo processo) {
         // se nao tiver ninguem pra comparar, so adiciona
@@ -18,6 +18,7 @@ public class TabelaDeProcessos {
                     listaProcesso.add(i, processo);
                     break;
                 }
+
                 // se tiver a mesma prioridade, ordena pelo nome
                 if (temp.getCredito() == processo.getCredito()) {
                     if (temp.bcp.getNomeArquivo().compareToIgnoreCase(processo.bcp.getNomeArquivo()) > 0) {
