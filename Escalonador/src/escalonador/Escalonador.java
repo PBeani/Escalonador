@@ -200,6 +200,10 @@ public class Escalonador {
     private void rodarEscalonador() {
         // fazer o funcionamento
         while (!tabelaProcessos.getTabelaProcesso().isEmpty()) {
+            listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
+            listaProntos.imprimeLista();
+            listaBloqueados.imprimeLista();
+            System.out.println("-----------------------------------------------------------------------------------------");
             if (tabelaProcessos.redistribuirCreditos()) {
                 redistribuirPrioridades();
             }
@@ -208,7 +212,6 @@ public class Escalonador {
                 atual.bcp.setEstado(estadoDoProcesso.EXECUTANDO);
                 executarProcesso(atual);
             }
-            listaBloqueados.atualizarListaBloqueados(listaProntos);// incrementar na contagem do tempo
 
         }
         // rodou todos os processos

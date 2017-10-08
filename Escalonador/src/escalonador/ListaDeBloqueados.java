@@ -28,7 +28,17 @@ public class ListaDeBloqueados {
                 processo.bcp.setEstado(estadoDoProcesso.PRONTO);
                 removerlistaBloqueados(processo);
                 listaProntos.inserirListaProntos(processo);
+                i --;
             }
         }
+    }
+    
+    public void imprimeLista() {
+        System.out.println("Bloqeuados: ");
+        for (Processo processo : listaBloqueados) {
+            System.out.print(processo.bcp.getNome() + " Creditos: " + processo.getCredito() +" Tempo de espera: " + processo.getEspera() +", ");
+        }
+        System.out.println("");
+        System.out.println("");
     }
 }

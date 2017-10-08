@@ -74,9 +74,12 @@ public class ListaDeProntos {
     }
 
     public void imprimeLista() {
+        System.out.println("Prontos: ");
         for (Processo processo : listaProntos) {
-            System.out.println(processo.bcp.getNome());
+            System.out.print(processo.bcp.getNome() + " Creditos: " + processo.getCredito() + ", ");
         }
+        System.out.println("");
+        System.out.println("");
     }
     
     public List<Processo> getList() {
