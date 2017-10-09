@@ -1,4 +1,5 @@
 package escalonador;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,7 +20,6 @@ public class Escalonador {
     PrintWriter escreverLog;
     FileWriter logWriter;
     Logfile log;
-    
 
     public Escalonador(String diretorio) {
         // constroi a lista que contem os arquivos que irao gerar os processos
@@ -36,8 +36,9 @@ public class Escalonador {
         tempoEspera = 3;
     }
 
-    private void criarLogfile(String diretorio) {
+    private void criarLogfile() {
         try {
+            String diretorio = ".\\logs";
             String nomeQuantum = "log".concat(Integer.toString(quantum)).concat(".txt");
             logfile = new File(diretorio, nomeQuantum);
             escreverLog = new PrintWriter(logfile);
@@ -90,7 +91,7 @@ public class Escalonador {
     private void executarProcesso(Processo p) {
 
         // escreve no log o processo atual que esta sendo executado
-        escreverLog.printf("Executando: ");
+        escreverLog.printf("Executando ");
         escreverLog.println(p.bcp.getNome());
         p.setCredito(p.getCredito() - 1);
         // carrega o bcp do processo, para trazer suas informacoes para a memoria
@@ -138,7 +139,7 @@ public class Escalonador {
                     escreverLog.printf(p.bcp.getNome());
                     escreverLog.printf(" terminado. X=");
                     escreverLog.print(p.bcp.getX());
-                    escreverLog.printf(" e Y=");
+                    escreverLog.printf(". Y=");
                     escreverLog.print(p.bcp.getY());
                     escreverLog.println("");
 
@@ -201,23 +202,23 @@ public class Escalonador {
         double mediaInstrucoes = log.fazerMediaInstrucao();
         double mediaTrocas = log.fazerMediaTrocas();
         escreverLog.printf("MEDIA DE TROCAS: ");
-    	escreverLog.println(mediaTrocas);
-    	escreverLog.printf("MEDIA DE INSTRUCOES: ");
-    	escreverLog.println(mediaInstrucoes);
-    	escreverLog.printf("QUANTUM: ");
-    	escreverLog.println(quantum);
+        escreverLog.println(mediaTrocas);
+        escreverLog.printf("MEDIA DE INSTRUCOES: ");
+        escreverLog.println(mediaInstrucoes);
+        escreverLog.printf("QUANTUM: ");
+        escreverLog.println(quantum);
         escreverLog.close();
-        }
+    }
 
     public static void main(String[] args) {
         // caminho para a pasta que contem os arquvios que serao usados no escalonamento
-        String diretorio = "C:\\Users\\amand_000\\Documents\\USP\\SO\\EP1\\processos";
+        String diretorio = ".\\processos";
         // cria o escalonador
 
         Escalonador escalonador = new Escalonador(diretorio);
-        escalonador.criarLogfile(diretorio);
+        escalonador.criarLogfile();
         escalonador.carregarTabelaElistas();
         escalonador.rodarEscalonador();
-            }
+    }
 
 }
