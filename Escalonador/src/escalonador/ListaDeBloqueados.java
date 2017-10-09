@@ -28,7 +28,11 @@ public class ListaDeBloqueados {
                 processo.bcp.setEstado(estadoDoProcesso.PRONTO);
                 removerlistaBloqueados(processo);
                 listaProntos.inserirListaProntos(processo);
+                i --;
             }
         }
     }
-}
+    }
+
+
+

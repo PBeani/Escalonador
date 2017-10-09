@@ -5,6 +5,7 @@ public class Processo {
     BCP bcp;
     private int credito;
     private int espera;
+    private boolean executouAgora = false; 
 
     public Processo(BCP bcp, int credito) {
         this.bcp = bcp;
@@ -27,4 +28,12 @@ public class Processo {
     public void setEspera(int espera) {
         this.espera = espera;
     }
+
+	public boolean isExecutouAgora() {
+		return executouAgora;
+	}
+
+	public void setExecutouAgora(boolean executouAgora) {
+		this.executouAgora = executouAgora;
+	}
 }

@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 public class Logfile {
 	
-    private int mediaTrocas;
+    private double mediaTrocas;
     private double mediaInstrucoes;
     private int totalTrocas;
     private double totalInstrucoes;
@@ -20,22 +20,13 @@ public class Logfile {
 		totalInstrucoes ++;
 	}
   	
-    public void fazerMedias() {
-    	mediaTrocas = mediaTrocas/totalTrocas;
-    	mediaInstrucoes = mediaInstrucoes/totalInstrucoes;
-    	System.out.printf("MEDIA DE TROCAS: %d \n", mediaTrocas);
-    	System.out.printf("MEDIA DE INSTRUCOES: %2f \n", mediaInstrucoes);
-    	
-    	//escreverLog.printf("MEDIA DE TROCAS: ");
-    	//escreverLog.println(mediaTrocas);
-    	//escreverLog.printf("MEDIA DE INSTRUCOES: ");
-    	//escreverLog.println(mediaInstrucoes);
-    	//escreverLog.printf("QUANTUM: ");
-
-		//escreverLog.printf("MEDIA DE TROCAS: %d \n", mediaTrocas);
-		//escreverLog.printf("MEDIA DE INSTRUCOES: %i /n", mediaInstrucoes);
-		//escreverLog.printf("QUANTUM %i /n"); //pegar quantum
-	    }
+	public double fazerMediaInstrucao() {
+		return  mediaInstrucoes/totalInstrucoes;		
+	}
+	
+	public double fazerMediaTrocas() {
+		return mediaTrocas/totalTrocas;
+	}
 
 	public double getMediaInstrucoes() {
 		return mediaInstrucoes;
@@ -45,7 +36,7 @@ public class Logfile {
 		this.mediaInstrucoes = mediaInstrucoes;
 	}
 
-	public int getMediaTrocas() {
+	public double getMediaTrocas() {
 		return mediaTrocas;
 	}
 

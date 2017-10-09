@@ -47,11 +47,12 @@ public class ListaDeProntos {
                     if (p2.bcp.getPrioridade() < p2.bcp.getPrioridade()) {
                         return 1;
                     }
+                    
                     //se credito e prioridade empatam, sera comparado a ordem alfabetica novamente
                     if (p1.bcp.getPrioridade() == p2.bcp.getPrioridade() && p1.bcp.getNome().compareToIgnoreCase(p2.bcp.getNome()) < 0) {
                         return -1;
                     } else {
-                        return 0;
+                        return -1;
                     }
                 }
                 return 0;
@@ -61,8 +62,44 @@ public class ListaDeProntos {
     }
 
     public void inserirListaProntos(Processo processo) {
-        listaProntos.add(processo);
-        ordenaListaProntos();
+        // se nao tiver ninguem pra comparar, so adiciona
+        if (listaProntos.isEmpty()) {
+        	listaProntos.add(processo);
+        } else {
+            for (int i = 0; i < listaProntos.size(); i++) {
+                Processo temp = listaProntos.get(i);
+                // se o processo atual tiver menos credito, adiciona o novo no lugar dele
+                if (temp.getCredito() < processo.getCredito()) {
+                	listaProntos.add(i, processo);
+                    break;
+                }
+
+                // se tiver o mesmo credito, insere o que acabou de executar na frente
+                if (temp.getCredito() == processo.getCredito()) {
+                	if(temp.isExecutouAgora()==true) {
+                		continue;
+                	}
+                	else{
+                		listaProntos.add(i, processo);
+                        break;
+                	}
+                }
+                //se tiver nenhum outro processo com um credito menor do que estou inserindo
+                if(i==listaProntos.size()-1) {
+                	listaProntos.add(processo);
+                    break;
+                }
+            }
+        }
+    }
+    
+    public void atualizarStatus() {
+    	for (Processo processo : listaProntos) {
+            if(processo.isExecutouAgora()==true) {
+            	processo.setExecutouAgora(false);
+            	continue;
+            }
+        }
     }
 
     public Processo removerListaProntos() {
@@ -73,12 +110,6 @@ public class ListaDeProntos {
         }
     }
 
-    public void imprimeLista() {
-        for (Processo processo : listaProntos) {
-            System.out.println(processo.bcp.getNome());
-        }
-    }
-    
     public List<Processo> getList() {
         return listaProntos;
     }
